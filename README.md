@@ -170,7 +170,7 @@ Docker Compose is used to orchestrate these services, making deployment and deve
 
 ### Backend
 ```env
-DATABASE_URL=postgresql://user:password@localhost:5432/dbname
+DATABASE_URL=postgresql://postgres:postgres@localhost:5432/url-shortener
 JWT_SECRET=your-secret-key
 PORT=3000
 ```
