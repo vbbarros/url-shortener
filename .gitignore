@@ -46,7 +46,6 @@ lerna-debug.log*
 postgres_data
 
 # Prisma
-backend/prisma/migrations/
 backend/prisma/*.db
 backend/prisma/dev.db
 backend/prisma/.env
