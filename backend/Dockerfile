@@ -2,7 +2,7 @@ FROM node:20-alpine
 
 WORKDIR /app
 
-RUN apk add --no-cache openssl
+RUN apk add --no-cache openssl netcat-openbsd
 
 COPY package*.json ./
 COPY prisma ./prisma/
@@ -17,4 +17,4 @@ RUN chmod +x ./scripts/start.sh
 
 EXPOSE 3000
 
-CMD ["./scripts/start.sh"] 
+CMD ["sh", "./scripts/start.sh"] 
