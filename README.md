@@ -163,7 +163,7 @@ Docker Compose is used to orchestrate these services, making deployment and deve
 
 1. Clone the repository
 2. Install Docker and Docker Compose
-3. Run `docker compose up`
+3. Run `docker compose up --build`
 4. Access the application at `http://localhost:5173`
 
 ## Environment Variables
