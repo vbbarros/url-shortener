@@ -25,7 +25,9 @@ api.interceptors.response.use(
     if (error.response?.status === 401) {
       localStorage.removeItem('@UrlShortener:token');
       localStorage.removeItem('@UrlShortener:user');
-      window.location.href = '/login';
+      if(error.response?.config?.url !== '/auth/login') {
+        window.location.href = '/login';
+      }
     }
     return Promise.reject(error);
   }
