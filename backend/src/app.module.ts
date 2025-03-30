@@ -4,9 +4,11 @@ import { HttpModule } from './infra/http/http.module';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { RateLimitInterceptor } from './infra/http/interceptors/rate-limit.interceptor';
 import { ShortUrlModule } from './infra/modules/short-url.module';
+import { HomeModule } from './infra/modules/home.module';
 
 @Module({
   imports: [
+    HomeModule,
     AuthModule,
     HttpModule,
     ShortUrlModule,

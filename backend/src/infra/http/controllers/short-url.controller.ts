@@ -5,6 +5,7 @@ import { CreateShortUrlUseCase } from '../../../domain/usecases/create-short-url
 import { FindUserUrlsUseCase } from '../../../domain/usecases/find-user-urls.usecase';
 import { AuthenticatedRequest } from '../types/authenticated-request';
 import { JwtService } from '@nestjs/jwt';
+import { ShortUrl } from '../../../domain/entities/short-url.entity';
 
 @Controller('short-urls')
 export class ShortUrlController {
@@ -15,7 +16,7 @@ export class ShortUrlController {
   ) {}
 
   @Post()
-  async create(@Body() createShortUrlDto: CreateShortUrlDto, @Req() req: AuthenticatedRequest) {
+  async create(@Body() createShortUrlDto: CreateShortUrlDto, @Req() req: AuthenticatedRequest): Promise<ShortUrl> {
     try {
       let userId: string | undefined;
       
@@ -34,23 +35,29 @@ export class ShortUrlController {
         userId,
       });
     } catch (error) {
-      throw new NotFoundException(error.message);
+      if (error instanceof Error) {
+        throw new NotFoundException(error.message);
+      }
+      throw new NotFoundException('An unexpected error occurred');
     }
   }
 
   @Get('list')
   @UseGuards(JwtAuthGuard)
-  async findUserUrls(@Req() req: AuthenticatedRequest) {
+  async findUserUrls(@Req() req: AuthenticatedRequest): Promise<ShortUrl[]> {
     try {
       if (!req.user?.sub) {
         throw new UnauthorizedException('User not authenticated');
       }
       return await this.findUserUrlsUseCase.execute(req.user.sub);
-    } catch (error) {
+    } catch (error: unknown) {
       if (error instanceof UnauthorizedException) {
         throw error;
       }
-      throw new NotFoundException(error.message);
+      if (error instanceof Error) {
+        throw new NotFoundException(error.message);
+      }
+      throw new NotFoundException('An unexpected error occurred');
     }
   }
 } 

@@ -27,8 +27,11 @@ export class AuthController {
         },
         token,
       };
-    } catch (error) {
-      throw new UnauthorizedException(error.message);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        throw new UnauthorizedException(error.message);
+      }
+      throw new UnauthorizedException('An unexpected error occurred');
     }
   }
 
@@ -37,7 +40,10 @@ export class AuthController {
     try {
       return await this.authenticateUserUseCase.execute(credentials);
     } catch (error) {
-      throw new UnauthorizedException(error.message);
+      if (error instanceof Error) {
+        throw new UnauthorizedException(error.message);
+      }
+      throw new UnauthorizedException('An unexpected error occurred');
     }
   }
 } 

@@ -1,11 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { NotFoundException } from '@nestjs/common';
 import { Response } from 'express';
-import { AppController } from '../app.controller';
+import { HomeController } from '../home.controller';
 import { RedirectShortUrlUseCase } from '../../../../domain/usecases/redirect-short-url.usecase';
 
-describe('AppController', () => {
-  let controller: AppController;
+describe('HomeController', () => {
+  let controller: HomeController;
   let redirectShortUrlUseCase: RedirectShortUrlUseCase;
 
   const mockRedirectShortUrlUseCase = {
@@ -14,7 +14,7 @@ describe('AppController', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      controllers: [AppController],
+      controllers: [HomeController],
       providers: [
         {
           provide: RedirectShortUrlUseCase,
@@ -23,7 +23,7 @@ describe('AppController', () => {
       ],
     }).compile();
 
-    controller = module.get<AppController>(AppController);
+    controller = module.get<HomeController>(HomeController);
     redirectShortUrlUseCase = module.get<RedirectShortUrlUseCase>(RedirectShortUrlUseCase);
 
     jest.clearAllMocks();

@@ -3,7 +3,7 @@ import { Response } from 'express';
 import { RedirectShortUrlUseCase } from '../../../domain/usecases/redirect-short-url.usecase';
 
 @Controller()
-export class AppController {
+export class HomeController {
   constructor(
     private readonly redirectShortUrlUseCase: RedirectShortUrlUseCase,
   ) {}
@@ -17,12 +17,15 @@ export class AppController {
   }
 
   @Get(':slug')
-  async redirect(@Param('slug') slug: string, @Res() response: Response) {
+  async redirect(@Param('slug') slug: string, @Res() response: Response): Promise<void> {
     try {
       const originalUrl = await this.redirectShortUrlUseCase.execute(slug);
       return response.redirect(originalUrl);
-    } catch (error) {
-      throw new NotFoundException(error.message);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        throw new NotFoundException(error.message);
+      }
+      throw new NotFoundException('An unexpected error occurred');
     }
   }
 } 
